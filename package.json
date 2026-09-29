@@ -1,7 +1,7 @@
 {
   "name": "codealpha_projectmanagementtool",
   "version": "1.0.0",
-  "description": "Task 3: Collaborative Project Management & Kanban Tool for CodeAlpha Internship",
+    "description": "Task 2: Collaborative Project Management & Kanban Tool for CodeAlpha Internship",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

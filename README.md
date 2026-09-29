@@ -1,6 +1,6 @@
 # CodeAlpha Project Management Tool
 
-A collaborative full-stack project management and interactive Kanban application built for the **CodeAlpha Full Stack Web Development Internship (Task 3)**.
+A collaborative full-stack project management and interactive Kanban application built for the **CodeAlpha Full Stack Web Development Internship (Task 2)**.
 
 ## Features
 - **Interactive Drag-and-Drop Kanban:** HTML5 drag-and-drop across 4 workflow states (`To Do`, `In Progress`, `In Review`, `Completed`), plus a "Move to" menu in each task for touch devices.
