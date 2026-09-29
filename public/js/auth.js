@@ -1,37 +1,35 @@
 let isSignUp = false;
 
+function showAlert(message, type) {
+  const alertEl = document.getElementById('auth-alert');
+  alertEl.textContent = message;
+  alertEl.className = `auth-alert ${type}`;
+}
+
 function toggleAuthMode() {
   isSignUp = !isSignUp;
-  const nameGroup = document.getElementById('name-group');
-  const submitBtn = document.getElementById('auth-submit-btn');
-  const switchText = document.getElementById('auth-switch-text');
-  const switchLink = document.getElementById('auth-switch-link');
-  const alertEl = document.getElementById('auth-alert');
-
-  alertEl.style.display = 'none';
-
-  if (isSignUp) {
-    nameGroup.style.display = 'block';
-    submitBtn.textContent = 'Create Account';
-    switchText.textContent = 'Already have an account?';
-    switchLink.textContent = 'Sign In';
-  } else {
-    nameGroup.style.display = 'none';
-    submitBtn.textContent = 'Sign In';
-    switchText.textContent = "Don't have an account?";
-    switchLink.textContent = 'Create one';
-  }
+  document.getElementById('auth-alert').className = 'auth-alert';
+  document.getElementById('name-group').style.display = isSignUp ? 'block' : 'none';
+  document.getElementById('auth-name').required = isSignUp;
+  document.getElementById('auth-title').textContent = isSignUp ? 'Create your account' : 'Sign in';
+  document.getElementById('auth-sub').textContent = isSignUp
+    ? 'It takes a minute. You can join any project after.'
+    : 'Welcome back. Pick up where your team left off.';
+  document.getElementById('auth-submit-btn').textContent = isSignUp ? 'Create account' : 'Sign in';
+  document.getElementById('auth-switch-text').textContent = isSignUp ? 'Already have an account?' : 'New here?';
+  document.getElementById('auth-switch-link').textContent = isSignUp ? 'Sign in' : 'Create an account';
 }
 
 document.getElementById('auth-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const alertEl = document.getElementById('auth-alert');
   const email = document.getElementById('auth-email').value.trim();
   const password = document.getElementById('auth-password').value;
   const name = document.getElementById('auth-name').value.trim();
 
   const endpoint = isSignUp ? '/api/auth/register' : '/api/auth/login';
   const payload = isSignUp ? { name, email, password } : { email, password };
+  const submitBtn = document.getElementById('auth-submit-btn');
+  submitBtn.disabled = true;
 
   try {
     const res = await fetch(endpoint, {
@@ -42,24 +40,17 @@ document.getElementById('auth-form')?.addEventListener('submit', async (e) => {
     const data = await res.json();
 
     if (!data.success) {
-      alertEl.textContent = data.message;
-      alertEl.style.display = 'block';
-      alertEl.style.background = '#fee2e2';
-      alertEl.style.color = '#dc2626';
+      showAlert(data.message, 'error');
+      submitBtn.disabled = false;
       return;
     }
 
     localStorage.setItem('kanban_token', data.token);
     localStorage.setItem('kanban_user', JSON.stringify(data.user));
-
-    alertEl.textContent = 'Success! Redirecting to board...';
-    alertEl.style.display = 'block';
-    alertEl.style.background = '#dcfce7';
-    alertEl.style.color = '#16a34a';
-
-    setTimeout(() => { window.location.href = 'index.html'; }, 700);
+    showAlert('Signed in. Opening your board…', 'success');
+    setTimeout(() => { window.location.href = 'index.html'; }, 500);
   } catch (err) {
-    alertEl.textContent = 'Network error occurred.';
-    alertEl.style.display = 'block';
+    showAlert('Could not reach the server. Is it running?', 'error');
+    submitBtn.disabled = false;
   }
 });

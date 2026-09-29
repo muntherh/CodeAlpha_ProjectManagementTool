@@ -1,26 +1,27 @@
-# CodeAlpha_ProjectManagementTool 📋
+# CodeAlpha Project Management Tool
 
 A collaborative full-stack project management and interactive Kanban application built for the **CodeAlpha Full Stack Web Development Internship (Task 3)**.
 
-## 🚀 Features
-- **Interactive Drag-and-Drop Kanban:** Smooth HTML5 drag-and-drop workflows across 4 workflow states (`To Do`, `In Progress`, `In Review`, `Completed`).
+## Features
+- **Interactive Drag-and-Drop Kanban:** HTML5 drag-and-drop across 4 workflow states (`To Do`, `In Progress`, `In Review`, `Completed`), plus a "Move to" menu in each task for touch devices.
 - **Multi-Project Workspaces:** Dynamic project switcher enabling team members to manage multiple group initiatives.
-- **Rich Task Cards:** Priority badges (Low, Medium, High), due dates, assignee avatars, and live comment counters.
-- **Task Modals & Communication:** In-depth task modal view with a real-time discussion thread for team collaboration.
-- **Team Assignment:** Role-based task allocation to team members with persistent profile details.
-- **Relational Database:** SQLite database managing `users`, `projects`, `tasks`, and `comments` with relational integrity.
+- **Rich Task Cards:** Priority badges (Low, Medium, High), due dates with overdue highlighting, assignee avatars, and comment counters.
+- **Task Details & Comments:** Task modal with priority, assignee, due date, status change, delete, and a discussion thread.
+- **Team Assignment:** Assign tasks to any registered team member.
+- **Authentication & Permissions:** JWT sign-in for every API route; only a task's creator, assignee, or project owner can delete it.
+- **Relational Database:** SQLite database managing `users`, `projects`, `tasks`, and `comments` with foreign keys and cascading deletes.
 
-## 🛠️ Tech Stack
+## Tech Stack
 - **Frontend:** HTML5 (Drag & Drop API), Modern CSS3 (Linear/Trello layout), Vanilla JavaScript (ES6+)
 - **Backend:** Node.js, Express.js
 - **Database:** SQLite3
-- **Security:** JSON Web Tokens (JWT), bcryptjs, CORS, Dotenv
+- **Security:** JSON Web Tokens (JWT), bcryptjs, input validation, HTML escaping, Dotenv
 
-## 💻 Getting Started Locally
+## Getting Started
 
 1. **Clone the repository:**
 ```bash
-git clone [https://github.com/muntherh/CodeAlpha_ProjectManagementTool.git](https://github.com/muntherh/CodeAlpha_ProjectManagementTool.git)
+git clone https://github.com/muntherh/CodeAlpha_ProjectManagementTool.git
 cd CodeAlpha_ProjectManagementTool
 ```
 
@@ -29,10 +30,16 @@ cd CodeAlpha_ProjectManagementTool
 npm install
 ```
 
-3. **Run the application:**
+3. **Create your `.env` file** (copy `.env.example`) and set a long random `JWT_SECRET`:
 ```bash
-node server.js
+cp .env.example .env
 ```
 
-4. **Access the Kanban board:**
+4. **Run the application:**
+```bash
+npm start
+```
+
+5. **Access the Kanban board:**
 Open your browser and navigate to `http://localhost:5002`.
+Demo accounts are created on first run (`lead@example.com`, `sarah@example.com`, `alex@example.com`, password `password123`).

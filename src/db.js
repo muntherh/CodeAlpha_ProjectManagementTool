@@ -8,13 +8,15 @@ const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Failed to connect to SQLite database:', err.message);
   } else {
-    console.log('✓ SQLite database connected successfully.');
+    console.log('SQLite database connected.');
     initializeDatabase();
   }
 });
 
 function initializeDatabase() {
   db.serialize(() => {
+    db.run('PRAGMA foreign_keys = ON');
+
     // 1. Users Table
     db.run(`
       CREATE TABLE IF NOT EXISTS users (
@@ -22,7 +24,7 @@ function initializeDatabase() {
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        avatar_url TEXT DEFAULT 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80',
+        avatar_url TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `);
@@ -35,7 +37,7 @@ function initializeDatabase() {
         description TEXT,
         owner_id INTEGER NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (owner_id) REFERENCES users(id)
+        FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
       )
     `);
 
@@ -49,10 +51,12 @@ function initializeDatabase() {
         status TEXT DEFAULT 'todo', -- 'todo', 'in_progress', 'review', 'done'
         priority TEXT DEFAULT 'medium', -- 'low', 'medium', 'high'
         assignee_id INTEGER,
+        created_by INTEGER,
         due_date TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (project_id) REFERENCES projects(id),
-        FOREIGN KEY (assignee_id) REFERENCES users(id)
+        FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+        FOREIGN KEY (assignee_id) REFERENCES users(id) ON DELETE SET NULL,
+        FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
       )
     `);
 
@@ -64,8 +68,8 @@ function initializeDatabase() {
         user_id INTEGER NOT NULL,
         content TEXT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (task_id) REFERENCES tasks(id),
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )
     `);
 
@@ -82,25 +86,25 @@ function seedInitialData() {
 
       // Insert Demo Users
       const insertUser = db.prepare(`
-        INSERT INTO users (name, email, password, avatar_url)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO users (name, email, password)
+        VALUES (?, ?, ?)
       `);
 
-      insertUser.run('Al-Munther', 'lead@example.com', hash, 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&q=80');
-      insertUser.run('Sarah Jenkins', 'sarah@example.com', hash, 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80');
-      insertUser.run('Alex Rivera', 'alex@example.com', hash, 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80');
+      insertUser.run('Al-Munther', 'lead@example.com', hash);
+      insertUser.run('Sarah Jenkins', 'sarah@example.com', hash);
+      insertUser.run('Alex Rivera', 'alex@example.com', hash);
 
       insertUser.finalize(() => {
         // Insert Demo Projects
         const insertProj = db.prepare(`INSERT INTO projects (title, description, owner_id) VALUES (?, ?, ?)`);
-        insertProj.run('🚀 AI Platform MVP Launch', 'Core product roadmap covering frontend UI, backend APIs, and real-time agent models.', 1);
-        insertProj.run('📱 Mobile Client Redesign', 'Complete redesign of user onboarding flow, checkout experience, and dark mode theme.', 1);
+        insertProj.run('Platform MVP Launch', 'Core product roadmap covering frontend UI, backend APIs, and real-time agent models.', 1);
+        insertProj.run('Mobile Client Redesign', 'Complete redesign of user onboarding flow, checkout experience, and dark mode theme.', 1);
 
         insertProj.finalize(() => {
           // Insert Demo Tasks
           const insertTask = db.prepare(`
-            INSERT INTO tasks (project_id, title, description, status, priority, assignee_id, due_date)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO tasks (project_id, title, description, status, priority, assignee_id, due_date, created_by)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1)
           `);
 
           insertTask.run(1, 'Architect Relational Database', 'Design SQLite tables for users, projects, tasks, and audit logs.', 'done', 'high', 1, '2026-09-10');
@@ -112,10 +116,10 @@ function seedInitialData() {
           insertTask.finalize(() => {
             // Insert Demo Comments
             const insertComment = db.prepare(`INSERT INTO comments (task_id, user_id, content) VALUES (?, ?, ?)`);
-            insertComment.run(3, 2, 'Drag and drop HTML5 API is working smoothly across desktop and mobile browsers!');
+            insertComment.run(3, 2, 'Drag and drop is working smoothly on desktop browsers!');
             insertComment.run(3, 1, 'Great job! Let us ensure database sync happens on drop event.');
             insertComment.finalize(() => {
-              console.log('✓ Initial project management data seeded successfully.');
+              console.log('Demo data seeded.');
             });
           });
         });

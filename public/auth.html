@@ -3,42 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In | CodeAlpha Kanban</title>
+  <title>Sign in | CodeAlpha Kanban</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body style="background: #0f172a; display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+<body class="auth-page">
 
-  <div style="background: white; border-radius: 12px; width: 100%; max-width: 420px; padding: 2.5rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);">
-    <div style="text-align: center; margin-bottom: 2rem;">
-      <h2 style="font-size: 1.6rem; color: #0f172a;">📋 CodeAlpha Kanban</h2>
-      <p style="color: #64748b; font-size: 0.95rem; margin-top: 0.4rem;">Collaborative Task & Project Management</p>
+  <aside class="auth-side">
+    <a href="auth.html" class="brand">
+      <span class="brand-mark"><span></span><span></span><span></span></span>
+      CodeAlpha Kanban
+    </a>
+
+    <div>
+      <h2>Plan the work. Move the cards. Ship it.</h2>
+      <p>Projects, tasks and comments for small teams, on one board everyone can see.</p>
+      <div class="mini-board" aria-hidden="true">
+        <div class="mini-col"><i class="hot"></i><i></i><i></i></div>
+        <div class="mini-col"><i class="hot"></i><i></i></div>
+        <div class="mini-col"><i class="ok"></i><i class="ok"></i><i class="ok"></i></div>
+      </div>
     </div>
 
-    <div id="auth-alert" style="display: none; padding: 0.75rem; border-radius: 6px; margin-bottom: 1.2rem; font-size: 0.9rem;"></div>
+    <div class="auth-foot">CodeAlpha Full Stack Internship · Task 3</div>
+  </aside>
 
-    <form id="auth-form">
-      <div id="name-group" class="form-group" style="display: none;">
-        <label>Full Name</label>
-        <input type="text" id="auth-name" class="form-control" placeholder="John Doe">
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" id="auth-email" class="form-control" placeholder="lead@example.com" required>
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="auth-password" class="form-control" placeholder="••••••••" required>
-      </div>
-      <button type="submit" id="auth-submit-btn" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-size: 1rem; margin-top: 0.5rem;">
-        Sign In
-      </button>
-    </form>
+  <main class="auth-main">
+    <div class="auth-card">
+      <h1 id="auth-title">Sign in</h1>
+      <p class="sub" id="auth-sub">Welcome back. Pick up where your team left off.</p>
 
-    <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #64748b;">
-      <span id="auth-switch-text">Don't have an account?</span>
-      <a href="javascript:void(0)" onclick="toggleAuthMode()" id="auth-switch-link" style="color: #3b82f6; font-weight: 700; text-decoration: none;">Create one</a>
+      <div id="auth-alert" class="auth-alert" role="alert"></div>
+
+      <form id="auth-form">
+        <div id="name-group" class="form-group" style="display: none;">
+          <label for="auth-name">Full name</label>
+          <input type="text" id="auth-name" class="form-control" placeholder="Your name" maxlength="50">
+        </div>
+        <div class="form-group">
+          <label for="auth-email">Email</label>
+          <input type="email" id="auth-email" class="form-control" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="auth-password">Password</label>
+          <input type="password" id="auth-password" class="form-control" placeholder="At least 8 characters" required>
+        </div>
+        <button type="submit" id="auth-submit-btn" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.7rem; margin-top: 0.4rem;">Sign in</button>
+      </form>
+
+      <p class="auth-switch">
+        <span id="auth-switch-text">New here?</span>
+        <a href="#" onclick="toggleAuthMode(); return false;" id="auth-switch-link">Create an account</a>
+      </p>
     </div>
-  </div>
+  </main>
 
   <script src="js/auth.js"></script>
 </body>

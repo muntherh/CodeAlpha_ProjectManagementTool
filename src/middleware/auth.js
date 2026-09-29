@@ -16,9 +16,9 @@ function verifyToken(req, res, next) {
     return res.status(401).json({ success: false, message: 'Access denied. Please authenticate first.' });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET || 'super_secret_kanban_codealpha_2026', (err, user) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
-      return res.status(403).json({ success: false, message: 'Invalid or expired token.' });
+      return res.status(401).json({ success: false, message: 'Your session has expired. Please sign in again.' });
     }
     req.user = user;
     next();

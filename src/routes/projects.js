@@ -3,6 +3,8 @@ const router = express.Router();
 const db = require('../db');
 const verifyToken = require('../middleware/auth');
 
+router.use(verifyToken);
+
 // Get all projects
 router.get('/', (req, res) => {
   const query = `
@@ -19,15 +21,19 @@ router.get('/', (req, res) => {
 });
 
 // Create new group project
-router.post('/', verifyToken, (req, res) => {
-  const { title, description } = req.body;
+router.post('/', (req, res) => {
+  const title = (req.body.title || '').trim();
+  const description = (req.body.description || '').trim();
 
-  if (!title || !title.trim()) {
+  if (!title) {
     return res.status(400).json({ success: false, message: 'Project title is required.' });
+  }
+  if (title.length > 80) {
+    return res.status(400).json({ success: false, message: 'Project title must be 80 characters or less.' });
   }
 
   const query = `INSERT INTO projects (title, description, owner_id) VALUES (?, ?, ?)`;
-  db.run(query, [title.trim(), description || '', req.user.id], function (err) {
+  db.run(query, [title, description, req.user.id], function (err) {
     if (err) return res.status(500).json({ success: false, message: 'Failed to create project.' });
     res.status(201).json({ success: true, message: 'Project created!', projectId: this.lastID });
   });
