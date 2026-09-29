@@ -1,0 +1,33 @@
+{
+  "name": "codealpha_projectmanagementtool",
+  "version": "1.0.0",
+  "description": "Task 3: Collaborative Project Management & Kanban Tool for CodeAlpha Internship",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muntherh/CodeAlpha_ProjectManagementTool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/muntherh/CodeAlpha_ProjectManagementTool/issues"
+  },
+  "homepage": "https://github.com/muntherh/CodeAlpha_ProjectManagementTool#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

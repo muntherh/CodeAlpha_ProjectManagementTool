@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In | CodeAlpha Kanban</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="background: #0f172a; display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+
+  <div style="background: white; border-radius: 12px; width: 100%; max-width: 420px; padding: 2.5rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <h2 style="font-size: 1.6rem; color: #0f172a;">📋 CodeAlpha Kanban</h2>
+      <p style="color: #64748b; font-size: 0.95rem; margin-top: 0.4rem;">Collaborative Task & Project Management</p>
+    </div>
+
+    <div id="auth-alert" style="display: none; padding: 0.75rem; border-radius: 6px; margin-bottom: 1.2rem; font-size: 0.9rem;"></div>
+
+    <form id="auth-form">
+      <div id="name-group" class="form-group" style="display: none;">
+        <label>Full Name</label>
+        <input type="text" id="auth-name" class="form-control" placeholder="John Doe">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="auth-email" class="form-control" placeholder="lead@example.com" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="auth-password" class="form-control" placeholder="••••••••" required>
+      </div>
+      <button type="submit" id="auth-submit-btn" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-size: 1rem; margin-top: 0.5rem;">
+        Sign In
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #64748b;">
+      <span id="auth-switch-text">Don't have an account?</span>
+      <a href="javascript:void(0)" onclick="toggleAuthMode()" id="auth-switch-link" style="color: #3b82f6; font-weight: 700; text-decoration: none;">Create one</a>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
